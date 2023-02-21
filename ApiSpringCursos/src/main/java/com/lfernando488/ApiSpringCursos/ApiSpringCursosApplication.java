@@ -25,10 +25,12 @@ public class ApiSpringCursosApplication {
 			Course c1 = new Course();
 			c1.setName("Angular");
 			c1.setCategory("Front-end");
+			c1.setStatus("Active");
 			
 			Course c2 = new Course();
 			c2.setName("Spring");
 			c2.setCategory("Back-end");
+			c2.setStatus("Active");
 			
 			courseRepository.saveAll(List.of(c1,c2));
 		};
