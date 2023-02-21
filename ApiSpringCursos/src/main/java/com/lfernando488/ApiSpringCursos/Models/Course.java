@@ -6,8 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 import lombok.Data;
 
@@ -22,10 +28,16 @@ public class Course {
 	@JsonProperty("_id")
 	private Long id;
 	
-	@Column(name = "NAME", length = 200, nullable = false)
+	@NotNull
+	@NotBlank
+	@Length(min = 5, max = 100)
+	@Column(name = "NAME", length = 100, nullable = false)
 	private String name;
 	
-	@Column(name = "CATEGORY", length = 20, nullable = false)
+	@NotNull
+	@Length(max = 10)
+	@Pattern(regexp = "Back-end|Front-end")
+	@Column(name = "CATEGORY", length = 10, nullable = false)
 	private String category;
 	
 }

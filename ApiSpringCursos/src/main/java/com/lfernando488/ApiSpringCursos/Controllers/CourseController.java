@@ -2,8 +2,13 @@ package com.lfernando488.ApiSpringCursos.Controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +24,7 @@ import com.lfernando488.ApiSpringCursos.Repositories.CourseRepository;
 
 //import lombok.AllArgsConstructor;
 
+@Validated //Ativa as validações na entrada dos métodos do controller
 @RestController
 @RequestMapping("/api/courses")
 //@AllArgsConstructor
@@ -37,7 +43,7 @@ public class CourseController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Course> findById(@PathVariable("id") Long id){
+	public ResponseEntity<Course> findById(@PathVariable("id") @NotNull @Positive Long id){
 		return courseRepository.findById(id)
 				.map(res -> ResponseEntity.ok().body(res))
 				.orElse(ResponseEntity.notFound().build());
@@ -51,12 +57,12 @@ public class CourseController {
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Course create(@RequestBody Course course){
+	public Course create(@RequestBody @Valid Course course){
 		return courseRepository.save(course);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Course> update(@PathVariable("id") Long id, @RequestBody Course course) {
+	public ResponseEntity<Course> update(@PathVariable("id") @NotNull @Positive Long id, @RequestBody @Valid Course course) {
 		return courseRepository.findById(id)
 				.map(resFound -> {
 					resFound.setName(course.getName()); 
@@ -68,7 +74,7 @@ public class CourseController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable("id") Long id){
+	public ResponseEntity<Void> delete(@PathVariable("id") @NotNull @Positive Long id){
 		return courseRepository.findById(id)
 				.map(resFound -> {
 					courseRepository.deleteById(id);
